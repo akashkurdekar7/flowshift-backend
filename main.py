@@ -214,8 +214,12 @@ async def run_pipeline(data: PipelineData):
                 if src_id in results:
                     node_inputs[handle_id] = results[src_id]
 
-        result = execute_node(node, node_inputs)
-        results[node_id] = result
+        try:
+            result = execute_node(node, node_inputs)
+            results[node_id] = result
+        except Exception as e:
+            result = f"Error: {str(e)}"
+            results[node_id] = result
 
     return {
         "results": results
